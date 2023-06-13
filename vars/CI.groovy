@@ -13,16 +13,12 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          sh '''
-             cd my-app
-             mvn clean install
-             mvn package && cp target/my-app-0.0.1-SNAPSHOT.jar my-app.jar
-          
-             
-         '''
+          dir('my-app') {
+            sh 'mvn clean install'
+            sh 'mvn package && cp target/my-app-0.0.1-SNAPSHOT.jar my-app.jar'
+          }
+          sh 'docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment .'
         }
-        sh "docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment ."
-
       }
 
       stage('Unit Tests') {
