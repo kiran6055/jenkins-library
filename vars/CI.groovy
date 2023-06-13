@@ -41,7 +41,7 @@ def call() {
 
       stage('Upload Code to Centralized Place') {
         steps {
-          sh "curl -v -u admin:admin123 --upload-file my-app.jar http://172.31.83.87:8081/repository/deops-asswssment/my-app.jar"
+          sh "curl -v -u admin:admin123 --upload-file /path/to/my-app.jar http://172.31.83.87:8081/repository/deops-asswssment/my-app.jar"
 
         }
       }
