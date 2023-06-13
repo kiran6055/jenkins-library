@@ -35,12 +35,13 @@ def call() {
       }
 
 
-      }
+
 
       stage('Upload Code to Centralized Place') {
         steps {
           echo "Pushing code to artifact repository"
         }
+      }
     }
   }
 }
