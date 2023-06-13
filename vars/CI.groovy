@@ -13,13 +13,13 @@ def call() {
 
       stage('Compile/Build') {
         steps {
+          sh '''
+             cd my-app
+             mvn clean install
+             cd target
+             java -jar my-app-0.0.1-SNAPSHOT.jar
+         '''
           sh "docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0 ."
-//          sh '''
-//             cd my-app
-//             mvn clean install
-//             cd target
-//             java -jar my-app-0.0.1-SNAPSHOT.jar
-//          '''
         }
 
       }
