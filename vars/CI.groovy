@@ -13,7 +13,7 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          sh "sudo docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0 ."
+          sh "docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0 ."
 //          sh '''
 //             cd my-app
 //             mvn clean install
@@ -41,8 +41,8 @@ def call() {
 
       stage('Upload Code to Centralized Place') {
         steps {
-          sh "sudo aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 855602409808.dkr.ecr.us-east-1.amazonaws.com"
-          sh "sudo docker push 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0"
+          sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 855602409808.dkr.ecr.us-east-1.amazonaws.com"
+          sh "docker push 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0"
 
         }
       }
