@@ -13,13 +13,15 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          sh '''
-             cd my-app
-             mvn clean install
-             cd target
-             java -jar my-app-0.0.1-SNAPSHOT.jar
-          '''
+          sh "docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0 ."
+//          sh '''
+//             cd my-app
+//             mvn clean install
+//             cd target
+//             java -jar my-app-0.0.1-SNAPSHOT.jar
+//          '''
         }
+
       }
 
       stage('Unit Tests') {
@@ -39,7 +41,9 @@ def call() {
 
       stage('Upload Code to Centralized Place') {
         steps {
-          echo "Pushing code to artifact repository"
+          sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 855602409808.dkr.ecr.us-east-1.amazonaws.com"
+          sh "docker push 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0"
+
         }
       }
     }
