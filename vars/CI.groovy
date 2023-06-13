@@ -13,7 +13,12 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          sh "mvn clean compile"
+          ssh """
+              cd my-app
+              mvn clean install
+              cd target
+              java -jar my-app-0.0.1-SNAPSHOT.jar
+          """
         }
       }
 
@@ -29,22 +34,15 @@ def call() {
         }
       }
 
-      stage('Build Package') {
-        steps {
-          sh """
-                        cd my-app
-                        mvn clean install
-                        cd target
-                        java -jar my-app-0.0.1-SNAPSHOT.jar
-                    """
-        }
+
       }
 
       stage('Upload Code to Centralized Place') {
         steps {
           echo "Pushing code to artifact repository"
         }
-      }
     }
   }
 }
+
+
