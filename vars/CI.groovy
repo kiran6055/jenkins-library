@@ -13,12 +13,12 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          ssh """
-              cd my-app
-              mvn clean install
-              cd target
-              java -jar my-app-0.0.1-SNAPSHOT.jar
-          """
+          sh '''
+             cd my-app
+             mvn clean install
+             cd target
+             java -jar my-app-0.0.1-SNAPSHOT.jar
+          '''
         }
       }
 
