@@ -19,7 +19,6 @@ def call() {
           
              
          '''
-          sh "sudo docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment:1.0.0 ."
         }
 
       }
