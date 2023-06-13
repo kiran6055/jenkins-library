@@ -40,8 +40,8 @@ def call() {
 
       stage('Upload Code to Centralized Place') {
         steps {
-          NEXUS_PASS = sh ( script: 'aws ssm get-parameters --region us-east-1 --names nexus.password  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
-          NEXUS_USER = sh ( script: 'aws ssm get-parameters --region us-east-1 --names nexus.user  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
+          NEXUS_PASS = sh(script: 'aws ssm get-parameters --region us-east-1 --names nexus.password  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
+          NEXUS_USER = sh(script: 'aws ssm get-parameters --region us-east-1 --names nexus.user  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
           wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: "${NEXUS_PASS}", var: 'SECRET']]]) {
             sh "curl -v -u ${NEXUS_USER}:${NEXUS_PASS} --upload-file ${COMPONENT}-${TAG_NAME}.zip http://172.31.83.87:8081/repository/${COMPONENT}/${COMPONENT}-${TAG_NAME}.zip"
           }
