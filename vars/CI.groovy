@@ -13,11 +13,12 @@ def call() {
 
       stage('Compile/Build') {
         steps {
-          dir('my-app') {
-            sh 'mvn clean install'
-            sh 'mvn package && cp target/my-app-0.0.1-SNAPSHOT.jar my-app.jar'
+          sh '''
+             cd my-app
+             mvn clean install
+
+          '''
           }
-          sh 'docker build -t 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment .'
         }
       }
 
@@ -38,9 +39,10 @@ def call() {
 
       stage('Upload Code to Centralized Place') {
         steps {
-//          sh "curl -v -u admin:admin123 --upload-file /path/to/my-app.jar http://172.31.83.87:8081/repository/deops-asswssment/my-app.jar"
-         sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 855602409808.dkr.ecr.us-east-1.amazonaws.com"
-         sh "docker push 855602409808.dkr.ecr.us-east-1.amazonaws.com/deops-asswssment"
+          NEXUS_PASS = sh ( script: 'aws ssm get-parameters --region us-east-1 --names nexus.pass  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
+          NEXUS_USER = sh ( script: 'aws ssm get-parameters --region us-east-1 --names nexus.user  --with-decryption --query Parameters[0].Value | sed \'s/"//g\'', returnStdout: true).trim()
+          wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs: [[password: "${NEXUS_PASS}", var: 'SECRET']]]) {
+            sh "curl -v -u ${NEXUS_USER}:${NEXUS_PASS} --upload-file ${component}-${TAG_NAME}.zip http://172.31.1.57:8081/repository/${component}/${component}-${TAG_NAME}.zip"
 
 
         }
